@@ -14,13 +14,20 @@ LOCAL_DOCKER_TGZ=$CACHE_DIR/docker-$DOCKER_VERSION.tgz
 LOCAL_COMPOSE=$CACHE_DIR/docker-compose-$COMPOSE_VERSION
 
 echo "-----> Using docker CLI $DOCKER_VERSION"
-[ -e $LOCAL_DOCKER_TGZ ] || curl -s https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}-ce.tgz -o $LOCAL_DOCKER_TGZ
+[ -e $LOCAL_DOCKER_TGZ ] || curl -s https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz -o $LOCAL_DOCKER_TGZ
+
+echo "DOCKER DOWNLOADED URL: "
+echo https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz
 
 echo "-----> Using docker-compose $COMPOSE_VERSION"
 [ -e $LOCAL_COMPOSE ] || curl -s -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > $LOCAL_COMPOSE
 
+echo "DOCKER-COMPOSE DOWNLOADED URL: "
+echo https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m`
+
 echo "-----> Installing binaries under /app/vendor"
-tar -zxf $LOCAL_DOCKER_TGZ -C $VENDOR_DIR docker/docker
+#tar -zxf $LOCAL_DOCKER_TGZ -C $VENDOR_DIR docker/docker
+tar -xzvf $LOCAL_DOCKER_TGZ -C $VENDOR_DIR docker/docker
 cp $LOCAL_COMPOSE $VENDOR_DIR/docker/docker-compose
 chmod 755 $VENDOR_DIR/docker/*
 
